@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Comic Scene</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f0f0f0;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    #scene {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      background: linear-gradient(#87CEEB, #ffffff);
+    }
+
+    .character {
+      width: 80px;
+      height: 80px;
+      background: url('https://i.imgur.com/1X3bqXG.png') center/cover no-repeat;
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      transition: left 2s linear;
+    }
+
+    .speech {
+      position: absolute;
+      background: #fff;
+      padding: 10px 15px;
+      border-radius: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      max-width: 200px;
+      font-size: 16px;
+      display: none;
+    }
+
+    .speech::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 20px;
+      border-width: 10px 10px 0;
+      border-style: solid;
+      border-color: #fff transparent transparent transparent;
+    }
+  </style>
+</head>
+<body>
+
+<div id="scene">
+  <div class="character" id="hero"></div>
+  <div class="speech" id="speechBox">Hi there!</div>
+</div>
+
+<script>
+  const hero = document.getElementById('hero');
+  const speech = document.getElementById('speechBox');
+
+  const scenes = [
+    { left: '150px', message: 'Hey! I just arrived.' },
+    { left: '400px', message: 'This place feels nice!' },
+    { left: '700px', message: 'Time to move on!' }
+  ];
+
+  let step = 0;
+
+  function showScene(index) {
+    const scene = scenes[index];
+    hero.style.left = scene.left;
+
+    // Show speech after movement
+    setTimeout(() => {
+      speech.style.left = `calc(${scene.left} + 30px)`;
+      speech.innerText = scene.message;
+      speech.style.display = 'block';
+
+      // Hide speech and go to next scene
+      setTimeout(() => {
+        speech.style.display = 'none';
+        step++;
+        if (step < scenes.length) {
+          showScene(step);
+        }
+      }, 2000); // duration of speech
+    }, 2000); // wait for movement
+  }
+
+  // Start the comic
+  showScene(step);
+</script>
+
+</body>
+</html>
